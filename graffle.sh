@@ -20,7 +20,8 @@ fi
 # that OmniGraffle is installed in /Applications, and use the
 # Professional version if it exists.
 if [ "x${GRAFFLE_APP}" == "x" ]; then
-    APP=`ls -t /Applications | grep '^OmniGraffle Professional' | head -n 1`
+    # Also looking in /Applications/graphics since that's where I have omnigraffle
+    APP=`ls -t /Applications /Applications/graphics | grep '^OmniGraffle Professional' | head -n 1`
 
     if [ "x${APP}" == "x" ]; then
         # Couldn't find a copy of OmniGraffle Pro.  Look for a copy of
@@ -79,3 +80,5 @@ DIR=`dirname $0`
 #echo Output = $OUTPUT_PATH
 
 osascript $DIR/graffle.scpt "${GRAFFLE_APP}" "$FORMAT" "$INPUT_PATH" "$OUTPUT_PATH"
+# avoid modifying .scpt file every time
+(cd $DIR; git checkout graffle.scpt)
